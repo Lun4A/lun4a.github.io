@@ -5,7 +5,7 @@ static web root
 
 
 # DB
-  | DB-center |
+a | DB-center |
 --- | --- | ---
-  | DB-distributed |
+a | DB-distributed |
 
