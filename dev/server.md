@@ -12,4 +12,4 @@ a | DB-distributed |
 Part.1 | Part.2 | none
 --- | --- | ---
 DB-center |  | 
-- | DB-distributed | 
+ - | DB-distributed | 
