@@ -1,8 +1,8 @@
 # nanoluna.github.io
-static web root
+* static web root
 
 # IO
-
+* backend script
 
 # DB
 Part.1 | Part.2 | none
