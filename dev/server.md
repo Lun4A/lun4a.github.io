@@ -9,7 +9,7 @@ a | DB-center |
 --- | --- | ---
 a | DB-distributed |
 
-Markdown | Less | Pretty
+Part.1 | Part.2 | none
 --- | --- | ---
-*Still* | `renders` | **nicely**
+DB-center |  | 
 1 | 2 | 3
