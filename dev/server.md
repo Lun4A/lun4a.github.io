@@ -1,10 +1,20 @@
-# nanoluna.github.io
+# protocol
+## TCP/IP
+
+## WebSocket
+
+## HTTP
+
+## Socket.IO
+
+# server type
+## ROOT
 * static web root
 
-# IO
+## IO
 * backend script
 
-# DB
+## DB
 Part.1 | Part.2 | none
 --- | --- | ---
 DB-center |  | 
