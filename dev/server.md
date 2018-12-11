@@ -1,13 +1,17 @@
-# protocol
+# Protocol
 ## TCP/IP
+* Backend
 
 ## WebSocket
+* Web Service for modern browser
 
 ## HTTP
+* Web Service
 
 ## Socket.IO
+* Web Service for old browser
 
-# server type
+# Server type
 ## ROOT
 * static web root
 
