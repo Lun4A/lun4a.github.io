@@ -18,16 +18,16 @@
 * static web root
 
 ## IO
-Part |  |  |
+Part |  |  | 
 --- | --- | --- | ---
 Front | WebSocket | Socket.IO | HTTP
-Back | TCP |  |
+Back | TCP |  | 
 * backend script
 
 ## DB
 > TCP
 
-Part.1 | Part.2 | none
+Part.1 | Part.2 | &nbsp;
 --- | --- | ---
 DB-center |  | 
 &nbsp; | DB-distributed | 
