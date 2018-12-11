@@ -18,9 +18,8 @@
 * static web root
 
 ## IO
-> TCP
-
-> HTTP, WebSocket, Socket.IO
+Front | WebSocket | Socket.IO | HTTP
+Back | TCP |  |  |
 * backend script
 
 ## DB
