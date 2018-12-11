@@ -11,14 +11,19 @@
 ## Socket.IO
 * Web Service for old browser
 
+
 # Server type
 ## ROOT
+> HTTP
 * static web root
 
 ## IO
+> TCP
+> HTTP, WebSocket, Socket.IO
 * backend script
 
 ## DB
+> TCP
 Part.1 | Part.2 | none
 --- | --- | ---
 DB-center |  | 
