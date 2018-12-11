@@ -1,0 +1,17 @@
+<script>
+var btn_start=document.querySelector(".start");
+
+function ws_send(s){
+	parent.postMessage
+}
+
+btn_start.onclick=function(){
+	var a=[""];
+	app.ws_send("NEW-INTEROPE "+a.join("\n"));
+};
+</script>
+<style>
+</style>
+<div>
+<button class="start">start</button>
+</div>

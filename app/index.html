@@ -1,0 +1,178 @@
+<script>
+var list=app0.querySelector(".list"),item=list.firstElementChild
+,	item2=list.querySelector(".item-info")
+,	q_item_node=".item-info,.item-title,.item-img,.item-desc"
+,	app_list={}
+,	app_built_in=[
+	{name:"Settings",description:"",url_main:"/app/setting.html",url_image:""}
+,	{name:"Input Boost",description:"",url_main:"/app/input-boost.html",url_image:""}
+,	{name:"Input Twin",description:"",url_main:"/app/input-twin.html",url_image:""}
+,	{name:"Install",description:"",url_main:"/app/install.html",url_image:""}
+]
+,	app_exten=[];
+
+item.remove();
+item2.remove();
+
+list.onclick=function(e){
+	var t=document.activeElement;
+
+	switch(t.constructor){
+	case HTMLButtonElement:
+		app_load(app_list[t.name],"app-"+t.name);
+		break;
+	}
+}
+
+for(var li=app_built_in,i=li.length-1;i>=0;i--)new_app(0,li[i],1);
+
+onload();
+
+new_app(1,{name:"TEST",url_image:"https://upload.wikimedia.org/wikipedia/commons/e/ed/Raccoon_%28Procyon_lotor%29_2.jpg",description:"",v_favorate:53,v_score:80,v_issue:3});
+
+function onload(){
+	for(var n in localStorage)
+	if(/^app-/.exec(n)){
+		var a=JSON.parse(localStorage[n]);
+		app_exten.push(a);
+		new_app(0,a);
+	}
+	app.ws_once("APP_LIST",function(c){
+		var li=JSON.parse("["+c[1].replace(/\n/g,",")+"]");
+		for(var j,i=0,l=li.length;i<l;i++){
+			j=li[i];
+			new_app(0,{name:j.name.replace(/\.[^\.]*$/,"")});
+		}
+	});
+	app.ws_send("APP_LIST");
+}
+function app_load(j,name){
+	if(!j.node){
+		if(app_built_in.indexOf(j)>=0){
+			var x=$.rq({
+				onload:function(){
+					app.app_load(this.responseText,name,j);
+				}
+			});
+			x.open("GET",j.url_main,true);
+			x.send();
+		}else{
+			f=document.createElement("iframe");
+			j.node=f;
+			f.className="app-frame";
+			f.src=j.url_main||"https://xlun4-app.github.io";
+
+			if(!j.url_main){
+				f.onload=function(){
+					app.ws_once("APP_"+j.name+".html",function(c){
+						f.contentWindow.postMessage({type:"html",src:c[1]},"*");
+					});
+					app.ws_send("APP_LOAD "+j.name+".html");
+				};
+			}
+			app.app_load(f,name,j);
+		}
+	}else{
+		app.list_set(0,j);
+	}
+}
+function new_app(type,j,rv){
+	var a=item.cloneNode(true),b=a.querySelectorAll(".item-info,.item-title,.item-img,.item-desc"),c;
+	if(type){
+		c=b[0].querySelectorAll(".p-favorate .cnt,.p-score .cnt,.p-issue .cnt");
+		c[0].textContent=j.v_favorate;
+		c[1].textContent=j.v_score;
+		c[2].textContent=j.v_issue;
+	}else{
+		b[0].parentNode.insertBefore(item2.cloneNode(true),b[0]);
+		b[0].remove();
+	}
+	b[1].parentNode.name=
+	b[1].textContent=j.name;
+	if(j.url_image)b[2].style.backgroundImage="url('"+j.url_image+"')";
+	b[3].textContent=j.description;
+
+	if(rv){
+		list.insertBefore(a,list.firstElementChild);
+	}else{
+		list.appendChild(a);
+	}
+
+	app_list[j.name]=j;
+
+	return a;
+}
+</script>
+<style>
+/*.app-index .s:not(.on){display:none}*/
+.app-index{position:relative}
+.app-index .app-frame{width:100%;height:100%}
+.app-index .f{flex:auto}
+.app-index .menu-search label{flex:1;text-align:center}
+.app-index .menu-item0{display:flex}
+.app-index .menu-item1{margin:0 1px;display:flex;flex:1;font-size:12px;line-height:2em}
+.app-index button{background:transparent;line-height:1;box-sizing:border-box}
+.app-index button div{font-size:.8em}
+.app-index label input{display:none}
+.app-index label span{display:block;padding:0 .4em}
+.app-index label input:checked + span{background:#8b9ee7;color:blue}
+.app-index .list{display:flex;flex-direction:row;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.app-index .list li{width:50%}
+.app-index .item-link{width:100%;text-align:left}
+.app-index .item-title{height:1.2em}
+.app-index .item-info{display:flex;justify-content:center}
+.app-index .item-info svg{width:1em;height:1em}
+.app-index .item-info button{height:1em}
+.app-index .item-info button div{display:flex}
+.app-index .item-info .cnt{min-width:1em}
+.app-index .item-info.built{justify-content:initial}
+.app-index .item-img{height:6.2em;background:no-repeat center;background-size:contain}
+.app-index .in-frame{margin:.1em}
+.app-index .p-favorate{color:#afaf3f;fill:#afaf3f}
+.app-index .p-favorate.on{color:#fff;fill:#fff;background:#afaf3f}
+.app-index .p-score{color:#3f7f3f;fill:#3f7f3f}
+.app-index .p-score.on{color:#fff;fill:#fff;background:#3f7f3f}
+.app-index .p-issue{color:#7f7f7f;fill:#7f7f7f}
+.app-index .p-issue.on{color:#fff;fill:#fff;background:#7f7f7f}
+
+@media screen and (min-width:481px){
+	.app-index .list{font-size:2em}
+	.app-index .list li{width:33.33%;max-width:160em}
+}
+</style>
+<form>
+	<div class="menu-search el-cascade0">
+		<div class="menu-item0 el-cascade1"><div class="menu-item1 el-g-btn">
+			<input class="f"><button>Search</button>
+			<label><input type="checkbox" checked><span>Built-in</span></label>
+		</div></div>
+		<div class="menu-item0 el-cascade1"><div class="menu-item1 el-g-btn">
+			<label><input type="radio" name="last"><span>everything</span></label>
+			<label><input type="radio" name="last" value="h"><span>last 24 hours</span></label>
+			<label><input type="radio" name="last" value="d" checked><span>last 3 days</span></label>
+			<label><input type="radio" name="last" value="m"><span>last month</span></label>
+		</div></div>
+		<div class="menu-item0 el-cascade1"><div class="menu-item1 el-g-btn">
+			<label><input type="radio" name="order" value="score"><span>Score</span></label>
+			<label><input type="radio" name="order" value="favorate"><span>Favorate</span></label>
+			<label><input type="radio" name="order" value="update" checked><span>Update</span></label>
+			<label></label>
+		</div></div>
+	</div>
+</form>
+<ul class="el list">
+	<li><div class="in-frame el-frame">
+		<div class="s item-info head built">
+			<svg><use xlink:href="#device"></use></svg>
+		</div>
+		<div class="s item-info head">
+			<button class="p-favorate"><div><svg><use xlink:href="#star"></use></svg><span class="cnt"></span></div></button>
+			<button class="p-score"><div><svg><use xlink:href="#chart-line"></use></svg><span class="cnt"></span></div></button>
+			<button class="p-issue"><div><svg><use xlink:href="#exclamation"></use></svg><span class="cnt"></span></div></button>
+		</div>
+		<button class="item-link">
+			<div class="item-title"></div>
+			<div class="item-img"><div class="item-desc"></div></div>
+		</button>
+	</div></li>
+</ul>
