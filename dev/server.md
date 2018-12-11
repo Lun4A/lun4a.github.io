@@ -18,7 +18,7 @@
 * static web root
 
 ## IO
-Part |  |  | 
+Part | &nbsp; | &nbsp; | &nbsp;
 --- | --- | --- | ---
 Front | WebSocket | Socket.IO | HTTP
 Back | TCP |  | 
