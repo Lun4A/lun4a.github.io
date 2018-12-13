@@ -41,10 +41,10 @@ function HideAddrBar(a){
 	var html=document.documentElement,bar=document.createElement("div");
 	bar.style.cssText="position:absolute;pointer-event:none;top:0;width:1px;height:"+(window.innerHeight+32)+"px";
 	bar.className="__bar__";
-	a=a?"addEventListener":"removeEventListener";
-	window[a]("touchstart",touchstart);
-	window[a]("touchend",touchend);
-	window[a]("resize",resize);
+	a=a?addEventListener:removeEventListener;
+	a("touchstart",touchstart);
+	a("touchend",touchend);
+	a("resize",resize);
 	function touchstart(){
 		document.body.appendChild(bar);
 	}
