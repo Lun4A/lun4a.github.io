@@ -53,10 +53,15 @@ mod.dom=(function mod_dom(r){
 	evt_click:function(proc,arr){
 		arr=arr||[HTMLButtonElement,HTMLAnchorElement];
 		return function(e){
-			for(var p=e.target,i=16;p&&i>0;p=p.parentNode,i--){
+			for(var c=0,n,l,v,u,j=0,p=e.target,i=16;p&&i>0;p=p.parentNode,i--){
 				if(arr.indexOf(p.constructor)<0)continue;
-				if(p.name in proc)b=proc[p.name].call(p,e);
-				else if("*" in proc)proc["*"].call(p,e);
+				if(n=p.name||p.href){
+					n=n.split(";"),l=n.length;
+					for(;j<l;j++){
+						if(v=n[j].split("\t"),u=v.shift(),u in proc)c++,proc[u].apply(proc,v);
+					}
+				}
+				if(c<1&&"*" in proc)proc["*"].call(p,e);
 			}
 		};
 	},
@@ -74,8 +79,8 @@ mod.dom=(function mod_dom(r){
 					if(a[i]==""){
 						arr[x].className=n.replace(/(\s*)$/," "+a[1]).trim();
 						break;
-					}else if(n.match(a[i])){
-						arr[x].className=n.replace(new RegExp("(\s*)"+a[i])," "+a[(i+1)%l||1]).trim();
+					}else if(n.match(new RegExp("\\b"+a[i]+"\\b"))){
+						arr[x].className=n.replace(new RegExp("(\s*)\\b"+a[i]+"\\b")," "+a[(i+1)%l||1]).trim();
 						break;
 					}
 				}
@@ -103,6 +108,9 @@ mod.dom=(function mod_dom(r){
 		}
 		if(arr2.length)a[0]=arr2,ret.push.apply(ret,this.rmv.apply(this,a));
 		return ret;
+	},
+	focus:function(node){
+		document.querySelectorAll(node).focus();
 	},
 	clone:function(list_node){
 		var i,r=[];

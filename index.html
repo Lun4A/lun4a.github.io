@@ -235,9 +235,11 @@ function proc_console_input(t,e){
 			}
 		}
 	},proc_menu={
+		xs:function(url){
+			if(!url)return;
+			app.app_request(url+"/");
+		},
 		"*":function(){
-			if(!this.name)return;
-			app.app_request(this.name+"/");
 		}
 	},proc_console={
 		refrash:function(){
@@ -289,6 +291,7 @@ function proc_console_input(t,e){
 				window.removeEventListener("mouseup",mu);
 				window.removeEventListener("touchend",mu);
 				$dom["app-console"].className=cc;
+				localStorage.console_height=st.height;
 			}
 
 			window.addEventListener("mousemove",mm);
@@ -299,7 +302,7 @@ function proc_console_input(t,e){
 
 		init_app_console_input();
 		init_app_console_input_text();
-		$dom[".app-console.on"].style.height=(localStorage.console_height||100)+"px";
+		if(localStorage&&localStorage.console_height)$dom[".app-console.on"].style.height=localStorage.console_height;
 	});
 
 	function init_app_console_input(){
@@ -420,7 +423,7 @@ iframe{border:0}
 		<a class="app-title" href="/" target="_blank"><svg><use xlink:href="#app"></use></svg></a>
 		<div class="item breadcrumb"></div>
 		<button class="item" data-el="class-toggle?query=.side .a"><svg><use xlink:href="#notifications"></use></svg></button>
-		<button class="item" data-el="class-toggle?query=.app-console;focus?query=.app-console-input-text"><svg><use xlink:href="#console"></use></svg></button>
+		<button name="rot	.app-console	on;focus	.app-console-input-text" class="item"><svg><use xlink:href="#console"></use></svg></button>
 	</div>
 	<div class="mod-charm app-side app-color-top on">
 		<button class="resize" name="charm_ex	.mod-charm">
@@ -431,7 +434,7 @@ iframe{border:0}
 		<button name="dashboard"><svg><use xlink:href="#dashboard"></use></svg><span>Dashboard</span></button>
 		<button><svg><use xlink:href="#lab"></use></svg><span>Lab</span></button>
 		<button name="charm	.mod-charm	.forum"><svg><use xlink:href="#info"></use></svg><span>Forum</span></button>
-		<button name="app"><svg><use xlink:href="#app0"></use></svg><span>App</span></button>
+		<button name="xs	app"><svg><use xlink:href="#app0"></use></svg><span>App</span></button>
 		<button><svg><use xlink:href="#storage"></use></svg><span>Drive</span></button>
 
 		<div class="exten forum">
