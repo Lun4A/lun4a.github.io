@@ -9,7 +9,14 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<title>Rune</title>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+	<link rel="stylesheet" href="mod/mod-lay-app.css">
+
+	<script src="mod/mod.js"></script>
+	<script src="mod/mod-dom.js"></script>
+	<script src="mod/mod-event.js"></script>
+	<script src="mod/mod-lay-app.js"></script>
 
 	<link rel="stylesheet" href="js/el/1.0/el.css">
 	<link rel="stylesheet" href="js/el/1.0/el-theme-light.css">
@@ -228,16 +235,15 @@ function proc_console_input(t,e){
 			}
 		}
 	},proc_menu={
-	},proc_menu_aside={
 		"*":function(){
 			if(!this.name)return;
 			app.app_request(this.name+"/");
 		}
 	},proc_console={
-		"app-console-refrash":function(){
+		refrash:function(){
 			$dom["app-console-output"].textContent="";
 		},
-		"app-console-input-clear":function(){
+		clear:function(){
 			$dom["app-console-input-text"].value="";
 			$dom["app-console-input-text"].focus();
 		}
@@ -256,17 +262,15 @@ function proc_console_input(t,e){
 
 	HideAddrBar(1);
 	EndDOM(function(){
-		$.var_update($dom,null,/(^#app-)|(^app-)/);
-		$.node_event(".app-head","click",proc_menu);
-		$.node_event(".app-aside","click",proc_menu_aside);
-		$.node_event(".app-console-float","click",proc_console);
-		$.node_event(".app-console-input","click",proc_console);
+		mod.dom.evt(".app-head,.app-side","click",mod.dom.evt_click(proc_menu));
+		mod.dom.evt(".app-console","click",mod.dom.evt_click(proc_console));
+		mod.dom.var($dom);
 
 		app.list_set("dashboard",{node:$dom["app-dashboard"]});
 
-		$dom["app-console-resize-ns"].ontouchstart=
-		$dom["app-console-resize-ns"].onmousedown=function(e){
-			var h=parseInt($dom["#app-console"].style.height),y=hh(e),cc=$dom["app-console"].className;
+		$dom["resize"].ontouchstart=
+		$dom["resize"].onmousedown=function(e){
+			var st=$dom[".app-console.on"].style,h=parseInt(st.height),y=hh(e),cc=$dom["app-console"].className;
 
 			$dom["app-console"].className+=" rs";
 
@@ -277,7 +281,7 @@ function proc_console_input(t,e){
 				}
 			}
 			function mm(e){
-				$dom["#app-console"].style.height=Math.min(Math.max(h+y-hh(e),100),$dom["app-console"].parentNode.clientHeight/2)+"px";
+				st.height=Math.min(Math.max(h+y-hh(e),100),document.body.clientHeight/2)+"px";
 			}
 			function mu(e){
 				window.removeEventListener("mousemove",mm);
@@ -295,18 +299,18 @@ function proc_console_input(t,e){
 
 		init_app_console_input();
 		init_app_console_input_text();
-		$dom["#app-console"].style.height=(localStorage.console_height||100)+"px";
+		$dom[".app-console.on"].style.height=(localStorage.console_height||100)+"px";
 	});
 
 	function init_app_console_input(){
-		var box=$dom["app-console-input"],in0=$dom["app-console-input-text"];
+		var box=$dom["app-console-input"];
 
-		$.node_on(".app-console",{
+		$.node_on(".app-console .prompt",{
 			mouseup:function(e){
 				if(box.contains(e.target))return;
 				var s=window.getSelection();
 				if(s.isCollapsed){
-					in0.focus();
+					$dom["app-console-input-text"].focus();
 				}
 			}
 		});
@@ -326,57 +330,37 @@ function proc_console_input(t,e){
 })();
 </script>
 <style>
-@keyframes bg_color{
-	from{border-color:#404680;background-color:#8b9ee7}
-	to{border-color:#161d3f;background-color:#396cc8}
-}
 html{line-height:1}
 body{margin:0;padding:0;font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;overscroll-behavior:contain}
+html,body{height:100%}
 a{text-decoration:none}
 a:hover{text-decoration:initial}
-a,button{border:1px dashed transparent;color:#404680}
 button,label{cursor:pointer}
-a:focus,button:focus{border:1px dashed #404680;outline:0;animation:bg_color 2s ease-in infinite alternate}
-a:active,a:hover,button:active,button:hover{background:#8b9ee7}
 iframe{border:0}
 
 
 .lib-svg{display:none}
 .frame{flex-direction:column}
 
+.app-side.on+div+div{left:2em}
+.app-side.ex+div+div{left:10em}
 
-.app-aoff .app-console,
-.app-aoff .app-console-float
-	{transition:unset}
-
-.app-main{flex:auto}
-.app-title{width:1em;font-size:2em}
-.app-head svg,
-.app-aside .item svg,
-.app-console svg{stroke:#000;stroke-width:0}
-.app-head svg,.app-console svg{width:1em;height:1em}
-.app-aside .item svg{width:1.5em;height:1.5em}
-.app-head button,
-.app-aside .item button,
-.app-console button{line-height:1}
-.app-aside .item:focus .icon,.app-aside .item:hover .icon{background:transparent}
-
-.app-console{position:relative;display:flex;flex-direction:column;height:0px;box-sizing:border-box;transition:all .4s}
-.app-console button{padding:0;background:transparent}
-#app-console,.app-console.on{height:100px}
+.app-console{position:absolute;left:0em;right:0;bottom:0;height:0px;line-height:1;box-sizing:border-box;transition:all .4s}
+.app-console button{border:0;padding:0;width:2em;height:2em;background:transparent}
+.app-console svg{width:1em;height:1em}
+#var,.app-console.on{height:100px}
 .app-console.rs{transition:unset}
-.app-console.on .app-console-float{top:-2em}
-.app-console .console-window{overflow:auto}
-.app-console .icons,
+.app-console.on .action{height:2em}
+.app-console .action{position:absolute;height:0em;right:0;bottom:100%;overflow:hidden;transition:all .4s}
+.app-console .prompt{height:100%;overflow:auto}
 .app-console .btns{width:2em;text-align:center}
 .app-console .inf{}
 .app-console .war{}
 .app-console .err{color:#bf0000}
 .app-console .str{color:#7f0000}
 .app-console .num{color:#0000ff}
-.app-console-float{display:flex;position:absolute;height:2em;top:0em;right:0;bottom:100%;transition:all .4s}
 .app-console-input{display:flex;line-height:2em}
-.app-console-input-text{padding:.5em 0 .5em .4em;border:0;box-sizing:border-box;flex:auto;resize:none;overflow:hidden}
+.app-console-input-text{padding:.5em 0 .5em .4em;border:0;line-height:1;box-sizing:border-box;flex:auto;resize:none;overflow:hidden}
 </style>
 </head>
 <body>
@@ -404,10 +388,15 @@ iframe{border:0}
 			<symbol viewBox="0 0 24 24" id="archive"><path d="m0,0 24,0 0,11 -24,0z m1,8 0,2 3,0 0,-2z m11,-7 0,9 3,0 0,-9z m4,0 0,9 3,0 0,-9z m4,0 0,9 3,0 0,-9z m-20,12 24,0 0,11 -24,0z m1,8 0,2 3,0 0,-2z m11,-7 0,9 3,0 0,-9z m4,0 0,9 3,0 0,-9z m4,0 0,9 3,0 0,-9z m4,0 0,9 3,0 0,-9z"/></symbol>
 			<symbol viewBox="0 0 24 24" id="refrash"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></symbol>
 			<symbol viewBox="0 0 24 24" id="storage"><path d="M18,8H16V4H18M15,8H13V4H15M12,8H10V4H12M18,2H10L4,8V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V4A2,2 0 0,0 18,2Z"/></symbol>
+			<symbol viewBox="0 0 24 24" id="lab"><path d="m8 3v1h0.92773v5l-6.9277 12h20l-6.9277-12v-5h0.92773v-1zm2.2168 1h3.5664v5l3.4648 6h-10.496l3.4648-6z"/></symbol>
+			<symbol viewBox="0 0 24 24" id="info"><path d="m2 2v20h20v-20h-20zm2 2h13v16h-13v-16zm14 0h1v16h-1v-16zm2 0h1v16h-1v-16zm-15 1v2h10v-2h-10zm0 4v2h10v-2h-10zm0 4v2h8v-2h-8zm0 4v2h6v-2h-6z"></path></symbol>
 			<symbol viewBox="0 0 24 24" id="access-point"><path d="M4.93,4.93C3.12,6.74 2,9.24 2,12C2,14.76 3.12,17.26 4.93,19.07L6.34,17.66C4.89,16.22 4,14.22 4,12C4,9.79 4.89,7.78 6.34,6.34L4.93,4.93M19.07,4.93L17.66,6.34C19.11,7.78 20,9.79 20,12C20,14.22 19.11,16.22 17.66,17.66L19.07,19.07C20.88,17.26 22,14.76 22,12C22,9.24 20.88,6.74 19.07,4.93M7.76,7.76C6.67,8.85 6,10.35 6,12C6,13.65 6.67,15.15 7.76,16.24L9.17,14.83C8.45,14.11 8,13.11 8,12C8,10.89 8.45,9.89 9.17,9.17L7.76,7.76M16.24,7.76L14.83,9.17C15.55,9.89 16,10.89 16,12C16,13.11 15.55,14.11 14.83,14.83L16.24,16.24C17.33,15.15 18,13.65 18,12C18,10.35 17.33,8.85 16.24,7.76M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/></symbol>
 
 			<symbol viewBox="0 0 24 24" id="resize-ns"><path d="m6,6 6,-6 6,6z m0,12 6,6 6,-6z M13,8 a1,1 0 0 1 -1,1 1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1z m0,4 a1,1 0 0 1 -1,1 1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1z m0,4 a1,1 0 0 1 -1,1 1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1z"/></symbol>
 			<symbol viewBox="0 0 24 24" id="resize-ew"><path d="m18,6 6,6 -6,6z M6,6 0,12 6,18Z m10,7 a1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1 1,1 0 0 1 -1,1z m-4,0 a1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1 1,1 0 0 1 -1,1z m-4,0 a1,1 0 0 1 -1,-1 1,1 0 0 1 1,-1 1,1 0 0 1 1,1 1,1 0 0 1 -1,1z"/></symbol>
+
+			<symbol viewBox="0 0 24 24" id="chevron-double-left"><path d="M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z"/></symbol>
+			<symbol viewBox="0 0 24 24" id="chevron-double-right"><path d="M5.59,7.41L7,6L13,12L7,18L5.59,16.59L10.17,12L5.59,7.41M11.59,7.41L13,6L19,12L13,18L11.59,16.59L16.17,12L11.59,7.41Z"/></symbol>
 
 			<symbol viewBox="0 0 24 24" id="chevron_right"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></symbol>
 			<symbol viewBox="0 0 24 24" id="check"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
@@ -425,32 +414,44 @@ iframe{border:0}
 			<symbol viewBox="0 0 24 24" id="close"><path d="m4,0 -4,4 8,8 -8,8 4,4 8,-8 8,8 4,-4 -8,-8 8,-8 -4,-4 -8,8z"/></symbol>
 		</defs></svg>
 	</div>
-	<div class="app-head el-menu-head">
-		<button class="item" data-el="class-toggle?query=.app-aside .a"><svg><use xlink:href="#menu"></use></svg></button>
+	
+	<div class="mod-start app-head app-color-top">
+		<button name="charm	.mod-charm" class="mod-charm-btn on"><svg><use xlink:href="#menu"></use></svg></button>
 		<a class="app-title" href="/" target="_blank"><svg><use xlink:href="#app"></use></svg></a>
 		<div class="item breadcrumb"></div>
 		<button class="item" data-el="class-toggle?query=.side .a"><svg><use xlink:href="#notifications"></use></svg></button>
 		<button class="item" data-el="class-toggle?query=.app-console;focus?query=.app-console-input-text"><svg><use xlink:href="#console"></use></svg></button>
 	</div>
-	<div class="el-menu-body">
-		<div class="app-aside el-aside">
-			<div class="side-item a">
-				<button class="item" name="dashboard"><div class="icon"><svg><use xlink:href="#dashboard"></use></svg></div><span class="text">Dashboard</span></button>
-				<button class="item" data-el="class-toggle?query=.app-aside .list,.app-aside .forum&amp;type=popup"><div class="icon"><svg><use xlink:href="#access-point"></use></svg></div><span class="text">Forum</span></button>
-				<button class="item app-load-list" name="app"><div class="icon"><svg><use xlink:href="#app0"></use></svg></div><span class="text">App</span></button>
-				<button class="item"><div class="icon"><svg><use xlink:href="#storage"></use></svg></div><span class="text">Drive</span></button>
-			</div><div class="list">
-				<div class="side-item b forum">
-					<button class="item"><div class="icon"><svg><use xlink:href="#appall"></use></svg></div><span class="text">ALL</span></button>
-					<button class="item"><div class="icon"><svg><use xlink:href="#chevron_right"></use></svg></div><span class="text">준비중 ...</span></button>
-					<button class="item"><div class="icon"><svg><use xlink:href="#chevron_right"></use></svg></div><span class="text">comming soon ...</span></button>
-				</div>
-			</div>
-		</div><div class="frame">
-			<div class="app-main">
-				<div class="app-dashboard">
-					dashbaord
-					<button class="test">test</button>
+	<div class="mod-charm app-side app-color-top on">
+		<button class="resize" name="charm_ex	.mod-charm">
+			<svg class="a"><use xlink:href="#chevron-double-left"></use></svg>
+			<svg class="b"><use xlink:href="#chevron-double-right"></use></svg>
+			<div class="c"></div>
+		</button>
+		<button name="dashboard"><svg><use xlink:href="#dashboard"></use></svg><span>Dashboard</span></button>
+		<button><svg><use xlink:href="#lab"></use></svg><span>Lab</span></button>
+		<button name="charm	.mod-charm	.forum"><svg><use xlink:href="#info"></use></svg><span>Forum</span></button>
+		<button name="app"><svg><use xlink:href="#app0"></use></svg><span>App</span></button>
+		<button><svg><use xlink:href="#storage"></use></svg><span>Drive</span></button>
+
+		<div class="exten forum">
+			<div class="subject">Forum</div>
+			<button><svg><use xlink:href="#appall"></use></svg><span>ALL</span></button>
+			<button><svg><use xlink:href="#chevron_right"></use></svg><span>준비중 ...</span></button>
+			<button><svg><use xlink:href="#chevron_right"></use></svg><span>comming soon ...</span></button>
+		</div>
+		<div class="exten board">
+			<div class="subject">Board</div>
+			<button>
+				<svg><use xlink:href="#chevron-double-left"></use></svg>
+				<span>CCCC</span>
+			</button>
+		</div>
+	</div>
+	<div class="mod-frame app-main">
+		<div class="var app-dashboard">
+			dashbaord
+			<button class="test">test</button>
 <script>
 document.querySelector('.test').onclick=start;
 
@@ -476,21 +477,20 @@ x.send('["Vibration Sample",{"body":"Moon","icon":"icon-192.png","vibrate":[200,
 	}
 }
 </script>
-				</div>
-			</div>
-			<div class="app-console">
-				<div class="app-console-float">
-					<button class="btns app-console-refrash"><svg><use xlink:href="#refrash"></use></svg></button>
-					<button class="btns app-console-resize-ns"><svg><use xlink:href="#resize-ns"></use></svg></button>
-				</div>
-				<div class="console-window">
-					<div class="app-console-output"></div>
-					<div class="app-console-input">
-						<button class="btns app-console-input-clear"><svg><use xlink:href="#close"></use></svg></button>
-						<div class="icons"><svg><use xlink:href="#chevron_right"></use></svg></div>
-						<textarea class="app-console-input-text" rows="1" wrap="off"></textarea>
-					</div>
-				</div>
+		</div>
+	</div>
+
+	<div class="var app-console">
+		<div class="action">
+			<button name="refrash"><svg><use xlink:href="#refrash"></use></svg>
+			</button><button name="resize" class="var resize"><svg><use xlink:href="#resize-ns"></use></svg>
+			</button>
+		</div>
+		<div class="prompt">
+			<div class="var app-console-output"></div>
+			<div class="var app-console-input">
+				<button name="clear" class="btns app-console-input-clear"><svg><use xlink:href="#close"></use></svg></button>
+				<textarea class="var app-console-input-text" rows="1" wrap="off" placeholder="&gt;_"></textarea>
 			</div>
 		</div>
 	</div>

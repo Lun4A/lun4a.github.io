@@ -245,7 +245,8 @@ run_lang:function(t){
 	}
 },
 var_update:function(r,t,m){
-	for(var rule,s=(t||document).querySelectorAll("style"),i=s.length-1;i>=0;i--){
+	m=m||"var";
+	for(var m0=new RegExp("^#"+m+"\\b"),rule,s=(t||document).querySelectorAll("style"),i=s.length-1;i>=0;i--){
 		rule = s[i].sheet.cssRules;
 
 		if(rule==null)continue;
@@ -253,21 +254,15 @@ var_update:function(r,t,m){
 		for(var j=rule.length-1,n;j>=0;j--){
 			n=rule[j].selectorText;
 			if(!n)continue;
-			if(m.exec(n)){
-				n=n.split(",");
-				r[n[0]]=rule[j];
-				rule[j].selectorText=n[1];
+			if(m0.exec(n)){
+				r[n.replace(/.*?,\s*/,"")]=rule[j];
+				rule[j].selectorText=n.split(",")[1];
 			}
 		}
 	}
 
-	for(var s=(t||document).querySelectorAll("[class*='-']"),i=s.length-1;i>=0;i--){
-		for(var li=s[i].classList,j=li.length-1;j>=0;j--){
-			n=li[j];
-			if(m.exec(n)){
-				r[n]=s[i];
-			}
-		}
+	for(var s=(t||document).querySelectorAll("[class^='"+m+"']"),i=s.length-1;i>=0;i--){
+		r[s[i].classList[1]]=s[i];
 	}
 },
 on1:function(a,b,c){
@@ -663,7 +658,7 @@ rule:cls(function(s,p){
 })
 };
 
-if($)for(var n in $$)$[n]=$$[v];else $=$$;
+if($)for(var n in $$)$[n]=$$[n];else $=$$;
 
 
 $.init_dir=$.host_get("el.js");

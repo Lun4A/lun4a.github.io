@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.4, maximum-scale=2, user-scalable=yes">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<title>Rune</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+	<link rel="stylesheet" href="mod/mod-lay-app.css">
+	<script src="mod/mod.js"></script>
+	<script src="mod/mod-dom.js"></script>
+	<script src="mod/mod-event.js"></script>
+	<script src="mod/mod-lay-app.js"></script>
+<style>
+html{line-height:1}
+body{margin:0;padding:0;font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;overscroll-behavior:contain}
+a{text-decoration:none}
+a:hover{text-decoration:initial}
+a,button{border:1px dashed transparent;color:#404680}
+button,label{cursor:pointer}
+a:focus,button:focus{border:1px dashed #404680;outline:0;animation:bg_color 2s ease-in infinite alternate}
+a:active,a:hover,button:active,button:hover{background:#8b9ee7}
+iframe{border:0}
+</style>
+</head>
+<body>
+	<div style="line-height:2em">
+		<button style="width:32px;background: #00F"></button>
+		<a style="width:32px;background: #00F"></a>
+	</div>
+	<div class="lib-svg">
+		<svg><defs>
+			<symbol viewBox="0 0 24 24" id="none2"><path d=""/></symbol>
+			<symbol viewBox="0 0 24 24" id="chevron-double-left"><path d="M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z"/></symbol>
+			<symbol viewBox="0 0 24 24" id="chevron-double-right"><path d="M5.59,7.41L7,6L13,12L7,18L5.59,16.59L10.17,12L5.59,7.41M11.59,7.41L13,6L19,12L13,18L11.59,16.59L16.17,12L11.59,7.41Z"/></symbol>
+		</defs></svg>
+	</div>
+	<div class="mod-start" style="background:aliceblue">
+		<button name="charm	.mod-charm">A</button>
+		<a>B</a>
+	</div>
+	<div class="mod-charm on" style="background:antiquewhite">
+		<button class="resize" name="charm_ex	.mod-charm">
+			<svg class="a"><use xlink:href="#chevron-double-left"></use></svg>
+			<svg class="b"><use xlink:href="#chevron-double-right"></use></svg>
+			<div class="c"></div>
+		</button>
+		<button name="charm	.mod-charm	.forum"><svg><use xlink:href="#chevron-double-left"></use></svg><span>AAAA</span></button>
+		<button name="charm	.mod-charm	.board"><svg><use xlink:href="#chevron-double-left"></use></svg><span>BBBB</span></button>
+
+		<div class="exten forum on" style="background:aquamarine">
+			<div class="subject">Forum</div>
+			<button>
+				<svg><use xlink:href="#chevron-double-left"></use></svg>
+				<span>BBBB</span>
+			</button>
+		</div>
+		<div class="exten board" style="background:aquamarine">
+			<div class="subject">Board</div>
+			<button>
+				<svg><use xlink:href="#chevron-double-left"></use></svg>
+				<span>CCCC</span>
+			</button>
+		</div>
+	</div>
+	<div class="mod-frame">
+		ABC<br>
+		123
+	</div>
+</body>
+</html>

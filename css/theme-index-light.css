@@ -1,2 +1,21 @@
-.app-console{border-top:1px solid #e1e1e1;background:#fff}
+@keyframes bg_color{
+	from{border-color:#404680;background-color:#8b9ee7}
+	to{border-color:#161d3f;background-color:#396cc8}
+}
+svg{stroke:#000;stroke-width:0}
+
+
+.app-head{background:rgba(255,255,255,0.6)}
+.app-head::after{content:" ";position:absolute;border-top:1px solid #f0f0f0;;left:0;bottom:0;right:0;pointer-events:none}
+.app-side,
+.app-side .exten{border-right:1px solid #f0f0f0;background:#fff;box-sizing:border-box}
+
+
+.app-color-top button,
+.app-color-top button{background:transparent}
+.aa{animation:bg_color 2s ease-in infinite alternate}
+.app-color-top a:focus,.app-color-top button:focus{outline:0}
+.app-color-top a:active,.app-color-top a:hover,.app-color-top button:active,.app-color-top button:hover{background:#fff;outline:1px dashed #7f7f7f;outline-offset:-3px}
+
+.app-console{border-top:1px solid #f0f0f0;background:#fff}
 .app-console hr{margin:0;border:0;border-top:1px solid #e7e7e7}

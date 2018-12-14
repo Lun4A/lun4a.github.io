@@ -1,0 +1,50 @@
+.mod-aoff .mod-charm,
+.mod-aoff .mod-charm .exten,
+.mod-aoff .mod-charm .resize .b,
+.mod-aoff .mod-charm .exten,
+.mod-aoff .mod-frame{transition:unset}
+
+.mod-start{z-index:1;position:fixed;display:flex;top:0;width:100%;line-height:3em}
+.mod-start a{line-height:inherit}
+.mod-start a,
+.mod-start button{z-index:3;position:relative;padding:0;border:0;width:2em;height:2em;text-align:center}
+.mod-start svg{width:1.2em;height:2em}
+.mod-start .breadcrumb{flex:auto}
+.mod-charm{z-index:1;position:fixed;display:flex;flex-direction:column;left:-2em;top:3em;bottom:0;width:2em;line-height:1em;transition:left .4s,width .4s}
+.mod-charm.on{left:0em}
+.mod-charm.on+.mod-frame{left:2em}
+.mod-charm.ex{width:10em}
+.mod-charm.ex+.mod-frame{left:10em}
+.mod-charm button{z-index:3;position:relative;padding:0;border:0;width:inherit;height:2em;line-height:2em}
+.mod-charm button svg{position:absolute;left:.4em;width:1.2em;height:2em}
+.mod-charm button>span{float:right;width:8em;text-align:left}
+.mod-charm button>span::after{content:" ";float:right;width:2em;transition:width .4s}
+.mod-charm .resize{height:1rem}
+.mod-charm .resize svg{width:1em;height:1em}
+.mod-charm .resize .a,
+.mod-charm .resize .b{top:0;transition:transform .4s}
+.mod-charm .resize .a{left:0}
+.mod-charm .resize .b{left:auto;right:0}
+.mod-charm .resize .c{position:absolute;border-top:1px dashed #000;top:50%;left:.5em;right:.5em}
+.mod-charm.ex .resize .a,
+.mod-charm.ex .resize .b{transform:rotateY(180deg)}
+.mod-charm.ex button span::after{width:0em}
+.mod-charm .exten{z-index:1;position:absolute;margin-left:1px;top:0;left:100%;width:0em;height:100%;opacity:0;transition:width .4s,opacity .4s}
+.mod-charm .exten.swap{transition:unset}
+.mod-charm .exten .subject{float:right;width:8em;line-height:1em}
+.mod-charm .exten button{float:right;width:8em}
+.mod-charm .exten button span{width:6em}
+.mod-charm .exten.on{z-index:2;width:8em;opacity:1}
+.mod-charm-btn{position:relative}
+.mod-charm-btn::after{content:" ";position:absolute;border-top:2px solid #000;width:0%;bottom:.3em;left:0;transition:width .4s}
+.mod-charm-btn.on::after{width:100%}
+.mod-frame{position:absolute;top:3em;left:0;right:0;transition:left .4s}
+
+@media screen and (max-width:320px){
+	
+}
+@media screen and (min-width:321px){
+	.mod-start{line-height:2em}
+	.mod-charm{top:2em}
+	.mod-frame{top:2em}
+}

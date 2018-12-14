@@ -1,8 +1,6 @@
 function desktop(){
-
+	this.list={};
 }
-desktop.prototype=Object.assign(desktop.prototype,{
-	load:function(src,hide){
-		
-	}
-});
+desktop.prototype.load=function(src,hide){
+	
+};

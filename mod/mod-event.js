@@ -12,7 +12,7 @@ mod.event=(function mod_event(r){
 	});
 	function fx0(p){
 		var n=p.name.split(";"),u,v,i=0,l=n.length;
-		for(;i<l;i++)if(v=n[i].split(" "),u=v.shift(),fx[u])fx[u].apply(m,v);
+		for(;i<l;i++)if(v=n[i].split("\t"),u=v.shift(),fx[u])fx[u].apply(m,v);
 	}
 	return r;
 })({

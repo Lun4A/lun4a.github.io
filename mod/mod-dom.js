@@ -17,9 +17,52 @@ mod.dom=(function mod_dom(r){
 
 		return r;
 	},
-	rot:function(arr){
+	var:function(r,t,m){
+		m=m||"var";
+		for(var m0=new RegExp("^#"+m+"\\b"),rule,s=(t||document).querySelectorAll("style"),i=s.length-1;i>=0;i--){
+			rule = s[i].sheet.cssRules;
+	
+			if(rule==null)continue;
+	
+			for(var j=rule.length-1,n;j>=0;j--){
+				n=rule[j].selectorText;
+				if(!n)continue;
+				if(m0.exec(n)){
+					r[n.replace(/.*?,\s*/,"")]=rule[j];
+					rule[j].selectorText=n.split(",")[1];
+				}
+			}
+		}
+	
+		for(var s=(t||document).querySelectorAll("[class^='"+m+"']"),i=s.length-1;i>=0;i--){
+			r[s[i].classList[1]]=s[i];
+		}
+	},
+	evt:function(arr){
 		if(arr.constructor!=Array)arr=[arr];
 		var arr2=[],x=arr.length-1,a=arguments;
+		for(;x>=0;x--){
+			if(arr[x].constructor==String){
+				arr2.push.apply(arr2,document.querySelectorAll(arr[x]));
+			}else{
+				arr[x].addEventListener(a[1],a[2]);
+			}
+		}
+		if(arr2.length)a[0]=arr2,this.evt.apply(this,a);
+	},
+	evt_click:function(proc,arr){
+		arr=arr||[HTMLButtonElement,HTMLAnchorElement];
+		return function(e){
+			for(var p=e.target,i=16;p&&i>0;p=p.parentNode,i--){
+				if(arr.indexOf(p.constructor)<0)continue;
+				if(p.name in proc)b=proc[p.name].call(p,e);
+				else if("*" in proc)proc["*"].call(p,e);
+			}
+		};
+	},
+	rot:function(arr){
+		if(arr.constructor!=Array)arr=[arr];
+		var ret,arr2=[],x=arr.length-1,a=arguments;
 		for(;x>=0;x--){
 			if(arr[x].constructor==String){
 				arr2.push.apply(arr2,document.querySelectorAll(arr[x]));
@@ -27,6 +70,7 @@ mod.dom=(function mod_dom(r){
 				var n=arr[x].className;
 				if(a.length==2)a=[a[0],a[1],""];
 				for(var i=1,l=a.length;i<l;i++){
+					ret=i-1;
 					if(a[i]==""){
 						arr[x].className=n.replace(/(\s*)$/," "+a[1]).trim();
 						break;
@@ -37,7 +81,28 @@ mod.dom=(function mod_dom(r){
 				}
 			}
 		}
-		if(arr2.length)a[0]=arr2,this.rot.apply(this,a);
+		if(arr2.length)a[0]=arr2,ret=this.rot.apply(this,a);
+		return ret;
+	},
+	rmv:function(arr){
+		if(arr.constructor!=Array)arr=[arr];
+		var ret=[],arr2=[],x=arr.length-1,a=arguments;
+		for(;x>=0;x--){
+			if(arr[x].constructor==String){
+				arr2.push.apply(arr2,document.querySelectorAll(arr[x]));
+			}else{
+				var n=arr[x].className;
+				for(var i=1,l=a.length;i<l;i++){
+					if(n.match(a[i])){
+						ret.push(a[i]);
+						n=n.replace(new RegExp("(\s*)"+a[i]),"").trim();
+					}
+				}
+				arr[x].className=n;
+			}
+		}
+		if(arr2.length)a[0]=arr2,ret.push.apply(ret,this.rmv.apply(this,a));
+		return ret;
 	},
 	clone:function(list_node){
 		var i,r=[];
