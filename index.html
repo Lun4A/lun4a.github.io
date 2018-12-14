@@ -286,18 +286,18 @@ function proc_console_input(t,e){
 				st.height=Math.min(Math.max(h+y-hh(e),100),document.body.clientHeight/2)+"px";
 			}
 			function mu(e){
-				window.removeEventListener("mousemove",mm);
-				window.removeEventListener("touchmove",mm);
-				window.removeEventListener("mouseup",mu);
-				window.removeEventListener("touchend",mu);
+				removeEventListener("mousemove",mm);
+				removeEventListener("touchmove",mm);
+				removeEventListener("mouseup",mu);
+				removeEventListener("touchend",mu);
 				$dom["app-console"].className=cc;
 				localStorage.console_height=st.height;
 			}
 
-			window.addEventListener("mousemove",mm);
-			window.addEventListener("touchmove",mm);
-			window.addEventListener("mouseup",mu);
-			window.addEventListener("touchend",mu);
+			addEventListener("mousemove",mm);
+			addEventListener("touchmove",mm);
+			addEventListener("mouseup",mu);
+			addEventListener("touchend",mu);
 		};
 
 		init_app_console_input();
