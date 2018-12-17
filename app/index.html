@@ -37,21 +37,21 @@ function onload(){
 		app_exten.push(a);
 		new_app(0,a);
 	}
-	app.ws_once("APP_LIST",function(c){
+	process.ws_once("APP_LIST",function(c){
 		var li=JSON.parse("["+c[1].replace(/\n/g,",")+"]");
 		for(var j,i=0,l=li.length;i<l;i++){
 			j=li[i];
 			new_app(0,{name:j.name.replace(/\.[^\.]*$/,"")});
 		}
 	});
-	app.ws_send("APP_LIST");
+	process.ws_send("APP_LIST");
 }
 function app_load(j,name){
 	if(!j.node){
 		if(app_built_in.indexOf(j)>=0){
 			var x=$.rq({
 				onload:function(){
-					app.app_load(this.responseText,name,j);
+					process.app_load(this.responseText,name,j);
 				}
 			});
 			x.open("GET",j.url_main,true);
@@ -60,20 +60,20 @@ function app_load(j,name){
 			f=document.createElement("iframe");
 			j.node=f;
 			f.className="app-frame";
-			f.src=j.url_main||"https://xlun4-app.github.io";
+			f.src=j.url_main||"https://xlun4-process.github.io";
 
 			if(!j.url_main){
 				f.onload=function(){
-					app.ws_once("APP_"+j.name+".html",function(c){
+					process.ws_once("APP_"+j.name+".html",function(c){
 						f.contentWindow.postMessage({type:"html",src:c[1]},"*");
 					});
-					app.ws_send("APP_LOAD "+j.name+".html");
+					process.ws_send("APP_LOAD "+j.name+".html");
 				};
 			}
-			app.app_load(f,name,j);
+			process.app_load(f,name,j);
 		}
 	}else{
-		app.list_set(0,j);
+		process.list_set(0,j);
 	}
 }
 function new_app(type,j,rv){

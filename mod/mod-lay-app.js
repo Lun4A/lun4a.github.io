@@ -1,4 +1,4 @@
-mod.lay_app=(function mod_event(r){
+mod.lay_app=(function mod_lay_app(r){
 	var m=mod.dom,fx_node,fx={
 		charm:function(n,b){
 			if(b){

@@ -1,6 +1,7 @@
 mod.event=(function mod_event(r){
 	var m=mod.dom,fx={
-		rot:m.rot
+		rot:m.rot,
+		focus:function(a){document.querySelector(a).focus()}
 	};
 	r.fx=fx;
 	addEventListener("click",function(e){

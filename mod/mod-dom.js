@@ -46,12 +46,12 @@ mod.dom=(function mod_dom(r){
 		}else ret.push(arr[i]);
 		return ret;
 	},
-	prop:function(arr){
+	prop:function(arr,a){
 		if(arr.constructor!=Array)arr=[arr];
 		arr=this.find(arr);
 		var n,a=arguments;
-		for(n in a[1])
-		for(var i=arr.length-1;i>=0;i--)arr[i][n]=a[1][n];
+		for(n in a)
+		for(var i=arr.length-1;i>=0;i--)arr[i][n]=a[n];
 	},
 	evt:function(arr){
 		if(arr.constructor!=Array)arr=[arr];
@@ -79,13 +79,13 @@ mod.dom=(function mod_dom(r){
 		for(var ret,x=arr.length-1,a=arguments;x>=0;x--){
 			var n=arr[x].className;
 			if(a.length==2)a=[a[0],a[1],""];
-			for(var i=1,l=a.length;i<l;i++){
+			for(var b,i=1,l=a.length;i<l;i++){
 				ret=i-1;
 				if(a[i]==""){
 					arr[x].className=n.replace(/(\s*)$/," "+a[1]).trim();
 					break;
-				}else if(n.match(new RegExp("\\b"+a[i]+"\\b"))){
-					arr[x].className=n.replace(new RegExp("(\s*)\\b"+a[i]+"\\b")," "+a[(i+1)%l||1]).trim();
+				}else if(b=a[i].replace(/ /g,"\\b|\\b"),n.match(new RegExp("\\b"+b+"\\b"))){
+					arr[x].className=n.replace(new RegExp("(\s*)\\b"+b+"\\b")," "+a[(i+1)%l||1]).trim();
 					break;
 				}
 			}
