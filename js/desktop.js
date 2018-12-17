@@ -11,6 +11,7 @@ desktop.prototype.new=function(meta,src){
 	f=new Function("app0",src.substr(8,i-9));
 	c=document.createElement("div");
 	c.innerHTML=src.substr(i-1).replace(/\bapp-index/g,id);
+	c.className+=" "+id;
 	f(c);
 
 	meta.node=c;
