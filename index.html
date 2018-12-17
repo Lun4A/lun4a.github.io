@@ -18,6 +18,8 @@
 	<script src="mod/mod-event.js"></script>
 	<script src="mod/mod-lay-app.js"></script>
 
+	<script src="js/desktop.js"></script>
+
 	<link rel="stylesheet" href="js/el/1.0/el.css">
 	<link rel="stylesheet" href="js/el/1.0/el-theme-light.css">
 	<script src="js/el/1.0/el.js"></script>
@@ -43,6 +45,21 @@ function force(a,b){
 }
 function EndDOM(a){
 	document.addEventListener("DOMContentLoaded",a);
+}
+function xs(cb){
+	var x=new XMLHttpRequest();
+	x.onreadystatechange=function(){if(this.readyState==4)fin()};
+	x.onerror=err;
+	x.ontimeout=err;
+
+	return x;
+
+	function fin(){if(cb)switch(x.status/100|0){
+		case 1:case 3:break;
+		case 2:cb.call(x);break;
+		default:cb.call(x,x.status);break;
+	}}
+	function err(e){cb.call(x,e);}
 }
 function HideAddrBar(a){
 	var html=document.documentElement,bar=document.createElement("div");
@@ -72,7 +89,7 @@ function ws_app(){
 navigator.serviceWorker.register('index.js').then(function(r){
 	//r.update();
 });
-var app={
+var process={
 	ws:ws_app(),
 	ws_proc:{
 		"APP":function(j){
@@ -93,9 +110,9 @@ var app={
 		
 	},
 	ws_onmessage:function(e){
-		var c=/([^ ]+) ([\w\W]*)/g.exec(e.data),p=(c.shift(),app.ws_proc[c[0]]);
+		var c=/([^ ]+) ([\w\W]*)/g.exec(e.data),p=(c.shift(),process.ws_proc[c[0]]);
 		if(p)p(c);
-		else if(p=app.list[c[0]]){
+		else if(p=process.list[c[0]]){
 			p.ws_proc(c);
 		}
 	},
@@ -107,9 +124,10 @@ var app={
 			this.ws.send(a||JSON.stringify(j));
 		}
 	},
+	apps:0,
 	list:{},
 	list_set:function(n,j){
-		if(this.list.current==j)v=this.list.dashboard;
+		if(this.list.current==j)j=this.list.dashboard;
 		this.list.current=j;
 		this.html(j.node);
 		if(n)this.list[n]=j;
@@ -117,19 +135,19 @@ var app={
 	index:0,newID:function(){
 		return "app-index-"+(++this.index);
 	},
-	app_load:function(s,name,j0){
+	app_load:function(src,name,j0){
 		var t=this,j=new_node();
 		this.list_set(name,j);
 
 		function new_node(){
 			var c,f,id=t.newID();
-			if(s.tagName){
-				c=s;
+			if(src.tagName){
+				c=src;
 			}else{
-				var i=s.indexOf("/script>");
-				f=new Function("app0",s.substr(8,i-9));
+				var i=src.indexOf("/script>");
+				f=new Function("app0",src.substr(8,i-9));
 				c=document.createElement("div");
-				c.innerHTML=s.substr(i-1).replace(new RegExp("app-index","g"),id);
+				c.innerHTML=src.substr(i-1).replace(/\dapp-index/g,id);
 				f.call(f,c);
 			}
 			c.classList.add(id);
@@ -149,21 +167,19 @@ var app={
 			return;
 		}
 
-		x=$.rq({
-			onload:function(){
-				t.app_load(this.responseText,name);
-			}
+		x=xs(function(){
+			t.app_load(this.responseText,name);
 		});
 		x.open(data?"POST":"GET",name,true);
 		x.send(data);
 	},
-	html:function(s){
+	html:function(src){
 		var a=document.querySelector(".app-main");
 		a.textContent="";
-		if(s)
-		switch(s.constructor){
-			case String:a.innerHTML=s;break;
-			default:a.appendChild(s);
+		if(src)
+		switch(src.constructor){
+			case String:a.innerHTML=src;break;
+			default:a.appendChild(src);
 		}
 	}
 },$dom={},api={};
@@ -171,7 +187,7 @@ var app={
 onmessage=function(e){
 	switch(e.data.type){
 	case "WS_SEND":
-		app.ws_send(0,e.data.msg);
+		process.ws_send(0,e.data.msg);
 		break;
 	}
 };
@@ -235,9 +251,9 @@ function proc_console_input(t,e){
 			}
 		}
 	},proc_menu={
-		xs:function(url){
-			if(!url)return;
-			app.app_request(url+"/");
+		xs:function(name){
+			if(!name)return;
+			process.apps.load(name,{url_main:name+"/"});
 		},
 		"*":function(){
 		}
@@ -251,12 +267,12 @@ function proc_console_input(t,e){
 		}
 	};
 
-	if(app.ws){
-		app.ws.binaryType="arraybuffer";
-		app.ws.onopen=app.ws_open;
-		app.ws.onerror=app.ws_error;
-		app.ws.onmessage=app.ws_onmessage;
-		app.ws.onclose=app.ws_close;
+	if(process.ws){
+		process.ws.binaryType="arraybuffer";
+		process.ws.onopen=process.ws_open;
+		process.ws.onerror=process.ws_error;
+		process.ws.onmessage=process.ws_onmessage;
+		process.ws.onclose=process.ws_close;
 	}
 
 	document.cookie="utc_offset="+(-new Date().getTimezoneOffset());
@@ -268,7 +284,12 @@ function proc_console_input(t,e){
 		mod.dom.evt(".app-console","click",mod.dom.evt_click(proc_console));
 		mod.dom.var($dom);
 
-		app.list_set("dashboard",{node:$dom["app-dashboard"]});
+		process.apps=new desktop($dom["app-main"],$dom["app-dashboard"],function(url,cb_done){
+			var x=xs(cb_done);
+			x.open("GET",url,true);
+			x.send();
+		});
+		process.list_set("dashboard",{node:$dom["app-dashboard"]});
 
 		$dom["resize"].ontouchstart=
 		$dom["resize"].onmousedown=function(e){
@@ -308,8 +329,8 @@ function proc_console_input(t,e){
 	function init_app_console_input(){
 		var box=$dom["app-console-input"];
 
-		$.node_on(".app-console .prompt",{
-			mouseup:function(e){
+		mod.dom.prop(".app-console .prompt",{
+			onmouseup:function(e){
 				if(box.contains(e.target))return;
 				var s=window.getSelection();
 				if(s.isCollapsed){
@@ -320,12 +341,12 @@ function proc_console_input(t,e){
 	}
 	function init_app_console_input_text(){
 		var h;
-		$.node_on(".app-console-input-text",{
-			focus:function(){
+		mod.dom.prop(".app-console-input-text",{
+			onfocus:function(){
 				if(this.value=='')h=this.clientHeight;
 			},
-			keydown:function(e){if(e.keyCode==13&&e.shiftKey==false){proc_console_input(this,e);return false}},
-			keyup:function(){
+			onkeydown:function(e){if(e.keyCode==13&&e.shiftKey==false){proc_console_input(this,e);return false}},
+			onkeyup:function(){
 				this.style.height=(((this.value.match(/\n/g)||{length:0}).length+1)*h)+"px";
 			}
 		});
@@ -431,7 +452,7 @@ iframe{border:0}
 			<svg class="b"><use xlink:href="#chevron-double-right"></use></svg>
 			<div class="c"></div>
 		</button>
-		<button name="dashboard"><svg><use xlink:href="#dashboard"></use></svg><span>Dashboard</span></button>
+		<button name="xs	main"><svg><use xlink:href="#dashboard"></use></svg><span>Dashboard</span></button>
 		<button><svg><use xlink:href="#lab"></use></svg><span>Lab</span></button>
 		<button name="charm	.mod-charm	.forum"><svg><use xlink:href="#info"></use></svg><span>Forum</span></button>
 		<button name="xs	app"><svg><use xlink:href="#app0"></use></svg><span>App</span></button>
@@ -451,7 +472,7 @@ iframe{border:0}
 			</button>
 		</div>
 	</div>
-	<div class="mod-frame app-main">
+	<div class="var app-main mod-frame">
 		<div class="var app-dashboard">
 			dashbaord
 			<button class="test">test</button>

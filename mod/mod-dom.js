@@ -46,6 +46,13 @@ mod.dom=(function mod_dom(r){
 		}else ret.push(arr[i]);
 		return ret;
 	},
+	prop:function(arr){
+		if(arr.constructor!=Array)arr=[arr];
+		arr=this.find(arr);
+		var n,a=arguments;
+		for(n in a[1])
+		for(var i=arr.length-1;i>=0;i--)arr[i][n]=a[1][n];
+	},
 	evt:function(arr){
 		if(arr.constructor!=Array)arr=[arr];
 		arr=this.find(arr);
