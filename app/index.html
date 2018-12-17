@@ -103,7 +103,6 @@ function new_app(type,j,rv){
 }
 </script>
 <style>
-/*.app-index .s:not(.on){display:none}*/
 .app-index{position:relative}
 .app-index .app-frame{width:100%;height:100%}
 .app-index .f{flex:auto}
@@ -126,7 +125,7 @@ function new_app(type,j,rv){
 .app-index .item-info .cnt{min-width:1em}
 .app-index .item-info.a{justify-content:initial}
 .app-index .img{height:6.2em;background:no-repeat center;background-size:contain}
-.app-index .in-frame{margin:.1em}
+.app-index .in-frame{outline:1px solid;outline-offset:-1px}
 .app-index .favorate{color:#afaf3f;fill:#afaf3f}
 .app-index .favorate.on{color:#fff;fill:#fff;background:#afaf3f}
 .app-index .score{color:#3f7f3f;fill:#3f7f3f}
@@ -161,7 +160,7 @@ function new_app(type,j,rv){
 	</div>
 </form>
 <ul class="el list">
-	<li><div class="in-frame el-frame">
+	<li><div class="in-frame">
 		<div class="var a item-info">
 			<svg><use xlink:href="#device"></use></svg>
 		</div>
