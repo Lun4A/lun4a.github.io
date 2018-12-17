@@ -56,5 +56,5 @@
 	.mod-frame{top:2em}
 }
 @media screen and (max-width:720px){
-	.mod-case .case0{max-width:none}
+	.mod-case .case0{width:100%;max-width:none}
 }
