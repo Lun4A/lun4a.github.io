@@ -2,8 +2,7 @@ mod.lay_app=(function mod_lay_app(r){
 	var m=mod.dom,fx_node,fx={
 		charm:function(n,b){
 			if(b){
-				var a=m.rmv(n+" .exten:not("+b+")","on","swap");
-				if(a.length){
+				if(m.rmv(n+" .exten:not("+b+")","on","swap")){
 					m.rot(b,"swap on");
 					m.rmv(n,"swap");
 				}else{

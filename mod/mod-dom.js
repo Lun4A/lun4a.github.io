@@ -97,10 +97,10 @@ mod.dom=(function mod_dom(r){
 		arr=this.find(arr);
 		for(var ret=[],x=arr.length-1,a=arguments;x>=0;x--){
 			var n=arr[x].className;
-			for(var i=1,l=a.length;i<l;i++){
-				if(n.match(new RegExp("\\b"+a[i]+"\\b"))){
-					ret.push(a[i]);
-					n=n.replace(new RegExp("(\s*)\\b"+a[i]+"\\b"),"").trim();
+			for(var b,i=1,l=a.length;i<l;i++){
+				if(b=a[i].replace(/ /g,"\\b|\\b"),n.match(new RegExp("\\b"+a[i]+"\\b"))){
+					ret=i;
+					n=n.replace(new RegExp("(\s*)\\b"+b+"\\b"),"").trim();
 				}
 			}
 			arr[x].className=n;
