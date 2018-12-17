@@ -38,7 +38,7 @@ function onload(){
 		new_app(0,a);
 	}
 	process.ws_once("APP_LIST",function(c){
-		var li=JSON.parse("["+c[1].replace(5/\n/g,",")+"]");
+		var li=JSON.parse("["+c[1].replace(/\n/g,",")+"]");
 		for(var j,i=0,l=li.length;i<l;i++){
 			j=li[i];
 			new_app(0,{name:j.name.replace(/\.[^\.]*$/,"")});
