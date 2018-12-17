@@ -140,22 +140,26 @@ function new_app(type,j,rv){
 	.app-index .list li{width:33.33%;max-width:160em}
 }
 </style>
-<form class="menu-search mod-case">
-	<div class="s0 case0">
-		<input class="f"><button>Search</button>
-		<label><input type="checkbox" checked><span>Built-in</span></label>
+<form class="menu-search">
+	<div class="mod-case">
+		<div class="s0 case0">
+			<input class="f"><button>Search</button>
+			<label><input type="checkbox" checked><span>Built-in</span></label>
+		</div>
+		<div class="s0 case0">
+			<label><input type="radio" name="last"><span>everything</span></label>
+			<label><input type="radio" name="last" value="h"><span>last 24 hours</span></label>
+			<label><input type="radio" name="last" value="d" checked><span>last 3 days</span></label>
+			<label><input type="radio" name="last" value="m"><span>last month</span></label>
+		</div>
 	</div>
-	<div class="s0 case0">
-		<label><input type="radio" name="last"><span>everything</span></label>
-		<label><input type="radio" name="last" value="h"><span>last 24 hours</span></label>
-		<label><input type="radio" name="last" value="d" checked><span>last 3 days</span></label>
-		<label><input type="radio" name="last" value="m"><span>last month</span></label>
-	</div>
-	<div class="s0 case0">
-		<label><input type="radio" name="order" value="score"><span>Score</span></label>
-		<label><input type="radio" name="order" value="favorate"><span>Favorate</span></label>
-		<label><input type="radio" name="order" value="update" checked><span>Update</span></label>
-		<label></label>
+	<div class="mod-case">
+		<div class="s0 case0">
+			<label><input type="radio" name="order" value="score"><span>Score</span></label>
+			<label><input type="radio" name="order" value="favorate"><span>Favorate</span></label>
+			<label><input type="radio" name="order" value="update" checked><span>Update</span></label>
+			<label></label>
+		</div>
 	</div>
 </form>
 <ul class="el list">

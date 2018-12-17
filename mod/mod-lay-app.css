@@ -44,7 +44,7 @@
 
 .mod-frame{position:absolute;top:3em;left:0;right:0;transition:left .4s}
 
-.mod-case{display:flex;flex-wrap:wrap}
+.mod-case{display:flex;flex-wrap:wrap;max-width:960px}
 .mod-case .case0{min-width:320px;outline:1px solid;outline-offset:-1px}
 
 @media screen and (max-width:320px){
