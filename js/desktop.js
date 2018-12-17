@@ -1,9 +1,10 @@
 function desktop(frame,main,cb_new){
+	var new_meta={name:"main",node:main};
 	//var request = indexedDB.open("desktop",2);
 	this.frame=frame;
-	this.current=main;
+	this.current=new_meta;
 	this.cb_new=cb_new;
-	this.list={main:main};
+	this.list={main:new_meta};
 	this.increment=0;
 }
 desktop.prototype.new=function(meta,src){
