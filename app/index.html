@@ -79,9 +79,9 @@ function new_app(type,j,rv){
 
 	mod.dom.var(b,a);
 	if(type){
-		b.favorate.textContent=j.favorate;
-		b.score.textContent=j.score;
-		b.issue.textContent=j.issue;
+		b.ifavorate.textContent=j.favorate;
+		b.iscore.textContent=j.score;
+		b.iissue.textContent=j.issue;
 		b.a.remove();
 	}else{
 		b.b.remove();
@@ -166,9 +166,9 @@ function new_app(type,j,rv){
 			<svg><use xlink:href="#device"></use></svg>
 		</div>
 		<div class="var b item-info">
-			<button class="var favorate"><div><svg><use xlink:href="#star"></use></svg><span class="cnt"></span></div></button>
-			<button class="var score"><div><svg><use xlink:href="#chart-line"></use></svg><span class="cnt"></span></div></button>
-			<button class="var issue"><div><svg><use xlink:href="#exclamation"></use></svg><span class="cnt"></span></div></button>
+			<button class="var favorate"><div><svg><use xlink:href="#star"></use></svg><span class="var ifavorate cnt"></span></div></button>
+			<button class="var score"><div><svg><use xlink:href="#chart-line"></use></svg><span class="var iscore cnt"></span></div></button>
+			<button class="var issue"><div><svg><use xlink:href="#exclamation"></use></svg><span class="var iissue cnt"></span></div></button>
 		</div>
 		<button class="var link">
 			<div class="var title"></div>
