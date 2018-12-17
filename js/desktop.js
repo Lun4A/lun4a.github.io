@@ -23,6 +23,7 @@ desktop.prototype.load=function(name,meta){
 		var t=this,url=meta.url_main;
 		t.cb_new(url,function(){
 			t.list[name]=t.new(meta,this.responseText);
+			if(!meta.style)t.show(name);
 		});
 	}
 };
