@@ -1,7 +1,5 @@
 <script>
 var list=app0.querySelector(".list"),item=list.firstElementChild
-,	item2=list.querySelector(".item-info")
-,	q_item_node=".item-info,.item-title,.item-img,.item-desc"
 ,	app_list={}
 ,	app_built_in=[
 	{name:"Settings",description:"",url_main:"/app/setting.html",url_image:""}
@@ -12,8 +10,7 @@ var list=app0.querySelector(".list"),item=list.firstElementChild
 ,	app_exten=[];
 
 item.remove();
-item2.remove();
-
+/*
 list.onclick=function(e){
 	var t=document.activeElement;
 
@@ -22,13 +19,13 @@ list.onclick=function(e){
 		app_load(app_list[t.name],"app-"+t.name);
 		break;
 	}
-}
+}*/
 
 for(var li=app_built_in,i=li.length-1;i>=0;i--)new_app(0,li[i],1);
 
 onload();
 
-new_app(1,{name:"TEST",url_image:"https://upload.wikimedia.org/wikipedia/commons/e/ed/Raccoon_%28Procyon_lotor%29_2.jpg",description:"",v_favorate:53,v_score:80,v_issue:3});
+new_app(1,{name:"TEST",url_image:"https://upload.wikimedia.org/wikipedia/commons/e/ed/Raccoon_%28Procyon_lotor%29_2.jpg",description:"",favorate:53,score:80,issue:3});
 
 function onload(){
 	for(var n in localStorage)
@@ -49,6 +46,7 @@ function onload(){
 function app_load(j,name){
 	if(!j.node){
 		if(app_built_in.indexOf(j)>=0){
+			process.apps.load();
 			var x=$.rq({
 				onload:function(){
 					process.app_load(this.responseText,name,j);
@@ -77,19 +75,20 @@ function app_load(j,name){
 	}
 }
 function new_app(type,j,rv){
-	var a=item.cloneNode(true),b=a.querySelectorAll(".item-info,.item-title,.item-img,.item-desc"),c;
+	var a=item.cloneNode(true),b={},c;
+
+	mod.dom.var(b,item);
 	if(type){
-		c=b[0].querySelectorAll(".p-favorate .cnt,.p-score .cnt,.p-issue .cnt");
-		c[0].textContent=j.v_favorate;
-		c[1].textContent=j.v_score;
-		c[2].textContent=j.v_issue;
+		b.favorate.textContent=j.favorate;
+		b.score.textContent=j.score;
+		b.issue.textContent=j.issue;
+		b.a.remove();
 	}else{
-		b[0].parentNode.insertBefore(item2.cloneNode(true),b[0]);
-		b[0].remove();
+		b.b.remove();
 	}
-	b[1].parentNode.name=
-	b[1].textContent=j.name;
-	if(j.url_image)b[2].style.backgroundImage="url('"+j.url_image+"')";
+	b.link.name=
+	b.title.textContent=j.name;
+	if(j.url_image)b.img.style.backgroundImage="url('"+j.url_image+"')";
 	b[3].textContent=j.description;
 
 	if(rv){
@@ -118,22 +117,22 @@ function new_app(type,j,rv){
 .app-index label input:checked + span{background:#8b9ee7;color:blue}
 .app-index .list{display:flex;flex-direction:row;flex-wrap:wrap;margin:0;padding:0;list-style:none}
 .app-index .list li{width:50%}
-.app-index .item-link{width:100%;text-align:left}
-.app-index .item-title{height:1.2em}
+.app-index .link{width:100%;text-align:left}
+.app-index .title{height:1.2em}
 .app-index .item-info{display:flex;justify-content:center}
 .app-index .item-info svg{width:1em;height:1em}
 .app-index .item-info button{height:1em}
 .app-index .item-info button div{display:flex}
 .app-index .item-info .cnt{min-width:1em}
-.app-index .item-info.built{justify-content:initial}
-.app-index .item-img{height:6.2em;background:no-repeat center;background-size:contain}
+.app-index .item-info.a{justify-content:initial}
+.app-index .img{height:6.2em;background:no-repeat center;background-size:contain}
 .app-index .in-frame{margin:.1em}
-.app-index .p-favorate{color:#afaf3f;fill:#afaf3f}
-.app-index .p-favorate.on{color:#fff;fill:#fff;background:#afaf3f}
-.app-index .p-score{color:#3f7f3f;fill:#3f7f3f}
-.app-index .p-score.on{color:#fff;fill:#fff;background:#3f7f3f}
-.app-index .p-issue{color:#7f7f7f;fill:#7f7f7f}
-.app-index .p-issue.on{color:#fff;fill:#fff;background:#7f7f7f}
+.app-index .favorate{color:#afaf3f;fill:#afaf3f}
+.app-index .favorate.on{color:#fff;fill:#fff;background:#afaf3f}
+.app-index .score{color:#3f7f3f;fill:#3f7f3f}
+.app-index .score.on{color:#fff;fill:#fff;background:#3f7f3f}
+.app-index .issue{color:#7f7f7f;fill:#7f7f7f}
+.app-index .issue.on{color:#fff;fill:#fff;background:#7f7f7f}
 
 @media screen and (max-width:420px){
 	.app-index .menu-search{font-size:.6em}
@@ -163,17 +162,17 @@ function new_app(type,j,rv){
 </form>
 <ul class="el list">
 	<li><div class="in-frame el-frame">
-		<div class="s item-info head built">
+		<div class="var a item-info">
 			<svg><use xlink:href="#device"></use></svg>
 		</div>
-		<div class="s item-info head">
-			<button class="p-favorate"><div><svg><use xlink:href="#star"></use></svg><span class="cnt"></span></div></button>
-			<button class="p-score"><div><svg><use xlink:href="#chart-line"></use></svg><span class="cnt"></span></div></button>
-			<button class="p-issue"><div><svg><use xlink:href="#exclamation"></use></svg><span class="cnt"></span></div></button>
+		<div class="var b item-info">
+			<button class="var favorate"><div><svg><use xlink:href="#star"></use></svg><span class="cnt"></span></div></button>
+			<button class="var score"><div><svg><use xlink:href="#chart-line"></use></svg><span class="cnt"></span></div></button>
+			<button class="var issue"><div><svg><use xlink:href="#exclamation"></use></svg><span class="cnt"></span></div></button>
 		</div>
-		<button class="item-link">
-			<div class="item-title"></div>
-			<div class="item-img"><div class="item-desc"></div></div>
+		<button class="var link">
+			<div class="var title"></div>
+			<div class="var img"><div class="var desc"></div></div>
 		</button>
 	</div></li>
 </ul>

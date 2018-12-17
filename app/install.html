@@ -1,5 +1,8 @@
 <script>
 var f_type={
+	url:function(){
+
+	},
 	"html":function(r,f){
 		r.onload=function(){
 			app.ws_send("APP_INSTALL "+JSON.stringify({type:"page",name:f.name})+"\n"+r.result);

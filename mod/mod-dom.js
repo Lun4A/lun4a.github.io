@@ -36,6 +36,7 @@ mod.dom=(function mod_dom(r){
 	
 		for(var s=(t||document).querySelectorAll("[class^='"+m+"']"),i=s.length-1;i>=0;i--){
 			r[s[i].classList[1]]=s[i];
+			s[i].classList.remove(m);
 		}
 	},
 	find:function(arr,doc){
