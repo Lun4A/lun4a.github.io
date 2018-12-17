@@ -44,8 +44,7 @@
 
 .mod-frame{position:absolute;top:3em;left:0;right:0;transition:left .4s}
 
-.mod-case{display:flex;flex-wrap:wrap}
-.mod-case .case0{min-width:320px;max-width:480px;outline:1px solid;outline-offset:-1px}
+.mod-case .case0{display:inline-block;width:33.33%;min-width:320px;max-width:480px;outline:1px solid;outline-offset:-1px}
 
 @media screen and (max-width:320px){
 	
@@ -54,7 +53,4 @@
 	.mod-start{line-height:2em}
 	.mod-charm{top:2em}
 	.mod-frame{top:2em}
-}
-@media screen and (min-width:720px){
-	.mod-case .case0{width:100%;max-width:none}
 }
