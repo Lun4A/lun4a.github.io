@@ -8,7 +8,7 @@ function desktop(frame,main,cb_new){
 }
 desktop.prototype.new=function(meta,src){
 	var id="app"+(++this.increment),i=src.indexOf("/script>"),
-	f=new Function("app0",src.substr(8,i-9));
+	f=new Function("app0",src.substr(8,i-9)),
 	c=document.createElement("div");
 	c.innerHTML=src.substr(i-1).replace(/\bapp-index/g,id);
 	c.className+=" "+id;
