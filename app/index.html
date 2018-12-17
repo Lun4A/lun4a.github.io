@@ -1,12 +1,6 @@
 <script>
 var list=app0.querySelector(".list"),item=list.firstElementChild
 ,	app_list={}
-,	app_built_in=[
-	{name:"Settings",description:"",url_main:"/app/setting.html",url_image:""}
-,	{name:"Input Boost",description:"",url_main:"/app/input-boost.html",url_image:""}
-,	{name:"Input Twin",description:"",url_main:"/app/input-twin.html",url_image:""}
-,	{name:"Install",description:"",url_main:"/app/install.html",url_image:""}
-]
 ,	app_exten=[];
 
 item.remove();
@@ -20,8 +14,6 @@ list.onclick=function(e){
 		break;
 	}
 }*/
-
-for(var li=app_built_in,i=li.length-1;i>=0;i--)new_app(0,li[i],1);
 
 onload();
 
@@ -45,37 +37,26 @@ function onload(){
 }
 function app_load(j,name){
 	if(!j.node){
-		if(app_built_in.indexOf(j)>=0){
-			process.apps.load();
-			var x=$.rq({
-				onload:function(){
-					process.app_load(this.responseText,name,j);
-				}
-			});
-			x.open("GET",j.url_main,true);
-			x.send();
-		}else{
-			f=document.createElement("iframe");
-			j.node=f;
-			f.className="app-frame";
-			f.src=j.url_main||"https://xlun4-process.github.io";
+		f=document.createElement("iframe");
+		j.node=f;
+		f.className="app-frame";
+		f.src=j.url_main||"https://xlun4-process.github.io";
 
-			if(!j.url_main){
-				f.onload=function(){
-					process.ws_once("APP_"+j.name+".html",function(c){
-						f.contentWindow.postMessage({type:"html",src:c[1]},"*");
-					});
-					process.ws_send("APP_LOAD "+j.name+".html");
-				};
-			}
-			process.app_load(f,name,j);
+		if(!j.url_main){
+			f.onload=function(){
+				process.ws_once("APP_"+j.name+".html",function(c){
+					f.contentWindow.postMessage({type:"html",src:c[1]},"*");
+				});
+				process.ws_send("APP_LOAD "+j.name+".html");
+			};
 		}
+		process.app_load(f,name,j);
 	}else{
 		process.list_set(0,j);
 	}
 }
 function new_app(type,j,rv){
-	var a=item.cloneNode(true),b={};
+	var a=item.cloneNode(true),b={},p;
 
 	mod.dom.var(b,a);
 	if(type){
@@ -83,11 +64,12 @@ function new_app(type,j,rv){
 		b.iscore.textContent=j.score;
 		b.iissue.textContent=j.issue;
 		b.a.remove();
+		p="xss	";
 	}else{
 		b.b.remove();
+		p="xs	";
 	}
-	b.link.name=
-	b.title.textContent=j.name;
+	b.link.name=p+b.title.textContent=j.name;
 	if(j.url_image)b.img.style.backgroundImage="url('"+j.url_image+"')";
 	b.desc.textContent=j.description;
 
