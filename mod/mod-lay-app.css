@@ -55,3 +55,6 @@
 	.mod-charm{top:2em}
 	.mod-frame{top:2em}
 }
+@media screen and (max-width:720px){
+	.mod-case .case0{max-width:none}
+}
