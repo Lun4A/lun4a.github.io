@@ -2,13 +2,17 @@ mod.lay_app=(function mod_lay_app(r){
 	var m=mod.dom,fx_node,fx={
 		charm:function(n,b){
 			if(b){
+				var a;
 				if(m.rmv(n+" .exten:not("+b+")","on","swap")){
-					m.rot(b,"swap on");
+					a=m.rot(b,"swap on");
 					m.rmv(n,"swap");
 				}else{
 					m.rmv(b,"swap");
-					m.rot(b,"on");
+					a=m.rot(b,"on");
 				}
+				onclick=a?function(){
+					fx.charm(n,b);
+				}:null;
 			}else{
 				m.rot(fx_node,"on");
 				m.rot(n,"on");
