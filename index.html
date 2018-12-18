@@ -222,7 +222,7 @@ function proc_console_input(t,e){
 		},
 		xs:function(name){
 			if(!name)return;
-			process.apps.load(name,{url_main:name+"/"});
+			process.apps.load(name,{url_main:name});
 		},
 		xss:function(name){
 			if(!name)return;
@@ -429,6 +429,10 @@ iframe{border:0}
 		<button name="charm	.mod-charm	.forum"><svg><use xlink:href="#info"></use></svg><span>Forum</span></button>
 		<button name="xs	app"><svg><use xlink:href="#app0"></use></svg><span>App</span></button>
 		<button><svg><use xlink:href="#storage"></use></svg><span>Drive</span></button>
+
+		<button name="charm	.mod-charm	.board"><svg><use xlink:href="#close"></use></svg><span>TEST</span></button>
+		<button name="xs	app/install"><svg><use xlink:href="#close"></use></svg><span>TEST</span></button>
+		<button name="xs	app/setting"><svg><use xlink:href="#close"></use></svg><span>TEST</span></button>
 
 		<div class="exten forum">
 			<div class="subject">Forum</div>
