@@ -25,6 +25,14 @@ desktop.prototype.load=function(name,meta){
 		var t=this,url=meta.url_main,src=meta.src_main;
 		if(/^http/.exec(url)||src)
 		t.list[name]=t.frame(meta,function(){
+			if(src){
+				f.contentWindow.postMessage({type:"html",src:src},"*");
+			}else{
+				t.cb_new(url,function(){
+					f.contentWindow.postMessage({type:"html",src:this.responseText},"*");
+					if(!meta.style)t.show(name);
+				});
+			}
 			if(!meta.style)t.show(name);
 		});
 		else
@@ -34,15 +42,10 @@ desktop.prototype.load=function(name,meta){
 		});
 	}
 };
-desktop.prototype.frmae=function(meta){
+desktop.prototype.frmae=function(meta,cb){
 	var f=document.createElement("iframe");
 	f.src=this.url_frmae;
-	f.onload=function(){
-		process.ws_once("APP_"+j.name+".html",function(c){
-			f.contentWindow.postMessage({type:"html",src:c[1]},"*");
-		});
-		process.ws_send("APP_LOAD "+j.name+".html");
-	};
+	f.onload=cb;
 
 	meta.node=f;
 

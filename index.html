@@ -213,7 +213,12 @@ function proc_console_input(t,e){
 	},proc_menu={
 		app:function(name){
 			if(!name)return;
-			process.apps.load(name,{url_src:""});
+			process.ws_once("APP_"+name+".html",function(c){
+				if(c[1]){
+					process.apps.load(name,{src_main:c[1]});
+				}
+			});
+			process.ws_send("APP_LOAD "+name+".html");
 		},
 		xs:function(name){
 			if(!name)return;
