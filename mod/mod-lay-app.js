@@ -10,7 +10,9 @@ mod.lay_app=(function mod_lay_app(r){
 					m.rmv(b,"swap");
 					a=m.rot(b,"on");
 				}
-				onclick=a?function(){
+				onclick=a?function(e){
+					for(var p=e.target,i=16;p&&i>0;p=p.parentNode,i--)
+					if(p[i].className.indexOf("mod-charm")>=0)return;
 					fx.charm(n,b);
 				}:null;
 			}else{
