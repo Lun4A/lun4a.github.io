@@ -50,8 +50,7 @@ mod.dom=(function mod_dom(r){
 	prop:function(arr,a){
 		if(arr.constructor!=Array)arr=[arr];
 		arr=this.find(arr);
-		var n,a=arguments;
-		for(n in a)
+		for(var n in a)
 		for(var i=arr.length-1;i>=0;i--)arr[i][n]=a[n];
 	},
 	evt:function(arr){
