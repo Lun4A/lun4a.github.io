@@ -104,8 +104,11 @@ function ws_app(){
 	}catch(e){}
 	return ws;
 }
+if(navigator.serviceWorker)
 navigator.serviceWorker.register('index.js').then(function(r){
 	//r.update();
+},function(e){
+	
 });
 var process={
 	ws:ws_app(),
